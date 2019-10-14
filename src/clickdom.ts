@@ -1,20 +1,22 @@
 export default class Clickdom {
-    private dom: EventTarget;
+    private dom:HTMLElement;
 
     public init(doc:HTMLDocument)
     {
-        doc.addEventListener('click',({target})=>{
-            this.dom = target;
-            console.log(target)
+        doc.addEventListener('click', (e:MouseEvent)=>{
+              
+            console.log(e);
             this.box();
         });
     }
 
     private box() {
         console.log(this.dom);
+        
         if (!this.dom) {
             // TODO
-
+            
         }
+        
     }
 }
