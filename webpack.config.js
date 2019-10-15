@@ -10,7 +10,7 @@ module.exports = {
         filename: 'bundle.js'
     }, // 出口
     resolve: {
-        extensions: ['.tsx', '.ts', '.js'],
+        extensions: ['.tsx', '.ts', '.js','.scss'],
     }, // 配置解析：配置别名、extensions 自动解析确定的扩展等等
     devServer: {
         port: 8082,
@@ -36,7 +36,7 @@ module.exports = {
                 test: /\.(sa|sc|c)ss$/,
                 include: [path.resolve(__dirname, 'src')],
                 use: [
-                    MiniCssExtractPlugin.loader,
+                    'style-loader',
                     'css-loader',
                     {
                         loader: 'postcss-loader',
