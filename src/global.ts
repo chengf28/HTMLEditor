@@ -7,8 +7,8 @@ export class clickPosition {
     _height:number;
 
     constructor(x: number, y: number, w: number, h: number) {
-        this._x = x;
-        this._y = y;
+        this._x = x+10;
+        this._y = y+10;
         this._width = w;
         this._height = h;
     }

@@ -15,7 +15,13 @@ export default class Clickdom {
 
     constructor()
     {
-        this.clickbox = new ClickBox;
+        this.clickbox = new ClickBox();
+    }
+
+    public  close()
+    {
+        this.isClick = false;
+        this.clickbox.close();
     }
 
     public static addLinsener(element: HTMLElement | HTMLDocument | Element): Clickdom {
@@ -48,11 +54,10 @@ export default class Clickdom {
             .setTitle(`<${this.element.tagName.toLowerCase()}>标签`)
             .setContent(this.element.innerHTML).show(1);
 
-
-        }else{
-            this.clickbox.close();
-            this.isClick = !this.isClick;
-            this.init(element);
+            this.clickbox.getTitleBtn().addEventListener('click',()=>{
+                this.isClick = false;
+                this.clickbox.close();
+            });
         }
     }
     

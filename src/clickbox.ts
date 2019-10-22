@@ -1,5 +1,6 @@
 import './clickbox.scss';
 import { clickPosition } from './global';
+import Clickdom from './clickdom';
 
 export default class ClickBox {
 
@@ -7,9 +8,12 @@ export default class ClickBox {
 
     static readonly className = 'clickdom';
 
-    constructor() {
-        
+    private titleBtn:HTMLButtonElement;
+
+    getTitleBtn(){
+        return this.titleBtn;
     }
+    
 
     /**
      * 设置盒子
@@ -79,9 +83,16 @@ export default class ClickBox {
     setTitle(text:string):ClickBox
     {
         if (this.box) {
-            let boxtitle = document.createElement('div');
-            boxtitle.id = ClickBox.getClassName('title');
-            boxtitle.textContent = text;
+            let boxtitle    = document.createElement('div');
+            boxtitle.id     = ClickBox.getClassName('title');
+            let p           = document.createElement('p');
+            p.textContent   = text;
+            let btn         = document.createElement('button');
+            btn.classList.add(ClickBox.getClassName('btn'));
+            btn.textContent = 'x';
+            this.titleBtn   = btn;
+            boxtitle.append(p);
+            boxtitle.append(btn);
             this.box.append(boxtitle);
         }
         return this;
@@ -97,9 +108,8 @@ export default class ClickBox {
         if (this.box) {
             let div = document.createElement('div');
             div.textContent = text.trim();
-
             div.id = ClickBox.getClassName('body');
-            div.contentEditable = 'true';
+            // div.contentEditable = 'true';
             this.box.append(div);
         }
         return this;
