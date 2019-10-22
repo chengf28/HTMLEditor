@@ -1,64 +1,57 @@
+import ClickBox from "./clickbox";
+import { clickPosition } from "./global";
+
 export default class Clickdom {
-    private dom: HTMLElement;
 
-    private rootDom:HTMLElement|HTMLDocument|Element;
+    private static instance: Clickdom = undefined;
 
-    private input:HTMLInputElement;
+    private static isInstance: boolean = false;
 
-    private pre:string = 'clickdom';
+    private isClick: boolean = false;
 
-    private isClick:boolean = false;
+    private element: HTMLElement;
 
-    public init(doc: HTMLDocument | HTMLElement | Element) {
-        this.rootDom = doc;
-        doc.addEventListener('click', (e: MouseEvent) => {
-            
-            this.dom = <HTMLElement>e.target;
-            if (this.rootDom != this.dom && this.dom.tagName.toLowerCase() != 'html') {
-                if (this.isClick) {
-                    return;
-                }
-                this.isClick = !this.isClick;
-                // this.setInput();
-                this.setAttr();
-            }
+    private clickbox:ClickBox;
+
+    constructor()
+    {
+        this.clickbox = new ClickBox;
+    }
+
+    public static addLinsener(element: HTMLElement | HTMLDocument | Element): Clickdom {
+        let clickdom = Clickdom.getInstance();
+        element.addEventListener('click', (e: MouseEvent) => {
+            clickdom.init(e);
         });
+        return clickdom;
     }
 
-    private setInput()
-    {
-        let input            = <HTMLInputElement>document.createElement('input');
-        input.className      = `${this.pre}-input`;
-        input.style.height   = this.dom.clientHeight.toString() + 'px';
-        input.style.width    = this.dom.clientWidth.toString() + 'px';
-        input.style.color    = this.dom.style.color;
-        input.value          = this.dom.textContent.trim();
-        // 置空文本
-        this.dom.textContent = '';
-        this.dom.append(input);
-        this.input = input;
-        this.input.focus();
-    }
-
-    private setAttr()
-    {
-        this.dom.setAttribute('contenteditable', 'true');
-        this.dom.focus();
-        this.dom.addEventListener('blur',(e)=>{
-            this.dom.removeAttribute('contenteditable');
-            this.comfirm();
-        });
-    }
-
-    public comfirm()
-    {
-        if (this.isClick) {
-            // 取反
-            this.isClick         = !this.isClick;
-            if (this.input) {
-                this.dom.textContent = this.input.value;
-                this.input.remove();
-            }
+    private static getInstance(): Clickdom {
+        if (!Clickdom.isInstance) {
+            Clickdom.instance = new Clickdom;
+            Clickdom.isInstance = true;
         }
+        return Clickdom.instance;
     }
+
+    public init(element: MouseEvent) {
+        if (!this.isClick) {
+            this.element = <HTMLElement>element.target;
+            let screenPosition: clickPosition = new clickPosition(
+                element.x,
+                element.y,
+                this.element.clientWidth,
+                this.element.clientHeight
+            );
+            this.clickbox.setBox(screenPosition)
+            .setTitle(`<${this.element.tagName.toLowerCase()}>`)
+            .setContent(this.element.innerHTML).show(1);
+
+        }else{
+            this.clickbox.close();
+        }
+        this.isClick = !this.isClick;
+    }
+    
 }
+

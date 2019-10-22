@@ -1,3 +1,10 @@
 import Clickdom from '../src/clickdom';
-let t = new Clickdom;
-t.init(document.body.getElementsByClassName('position')[0]);
+import "../src/app.scss";
+// let t = new Clickdom(document.getElementById('box'));
+
+var aaa = Clickdom.addLinsener(document.getElementById('parent'));
+
+console.log(aaa);
+
+
+
