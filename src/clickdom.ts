@@ -44,7 +44,7 @@ export default class Clickdom {
                 this.element.clientHeight
             );
             this.clickbox.setBox(screenPosition)
-            .setTitle(`<${this.element.tagName.toLowerCase()}>`)
+            .setTitle(`<${this.element.tagName.toLowerCase()}>标签`)
             .setContent(this.element.innerHTML).show(1);
 
         }else{
