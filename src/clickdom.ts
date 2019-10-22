@@ -36,6 +36,7 @@ export default class Clickdom {
 
     public init(element: MouseEvent) {
         if (!this.isClick) {
+            this.isClick = !this.isClick;
             this.element = <HTMLElement>element.target;
             let screenPosition: clickPosition = new clickPosition(
                 element.x,
@@ -47,10 +48,12 @@ export default class Clickdom {
             .setTitle(`<${this.element.tagName.toLowerCase()}>标签`)
             .setContent(this.element.innerHTML).show(1);
 
+
         }else{
             this.clickbox.close();
+            this.isClick = !this.isClick;
+            this.init(element);
         }
-        this.isClick = !this.isClick;
     }
     
 }
