@@ -1,10 +1,9 @@
-import Clickdom from '../src/clickdom';
+import htmleditor from './HTMLEditor';
 import "../src/app.scss";
-// let t = new Clickdom(document.getElementById('box'));
+// let t = new HTMLEditor(document.getElementById('box'));
 
-var aaa = Clickdom.addLinsener(document.getElementById('parent'));
+var aaa = htmleditor.addLinsener(document.getElementById('container'));
 
-console.log(aaa);
 
 
 

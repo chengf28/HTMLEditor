@@ -1,0 +1,111 @@
+
+$name : 'htmleditor';
+
+$box-shadow: 3px 3px 5px rgba(0, 0, 0, .25);
+
+.#{$name}-panel{
+    z-index   : 999;
+    box-sizing: border-box;
+    box-shadow: $box-shadow;
+    transition: transform .3s;
+    position: absolute;
+    transform: scale(0);
+    
+    .#{$name}-btn{
+        background   : none;
+        background   : #fff;
+        border       : none;
+        width        : 2rem;
+        height       : 1.5rem;
+        cursor       : pointer;
+        border-radius: 2px;
+        // box-shadow   : 0 0 5px rgba(0, 0, 0, .25);
+        margin: 0 .3rem;
+        &:hover{
+            box-shadow: 0 0 10px rgba(0, 0, 0, .25);
+        }
+        &:focus{
+            outline: none;
+        }
+        &:active{
+            transform: scale(.9);
+            box-shadow: 0 0 15px rgba(0, 0, 0, .5);
+        }
+    }
+
+
+
+    ##{$name}-title{
+        width              : 100%;
+        background         : #fff;
+        padding            : .3rem .8rem;
+        box-sizing         : border-box;
+        font-size          : 1.5rem;
+        border-bottom-style: ridge;
+        border-bottom-width: 1px;
+        border-bottom-color: bisque;
+        display            : flex;
+        justify-content    : flex-end;
+        align-items        : center;
+        p{
+            width: 100%;
+        }
+    }
+    ##{$name}-body{
+        border            : none;
+        width             : 100%;
+        min-height        : 100px;
+        word-wrap         : break-word;
+        box-sizing        : border-box;
+        // display        : flex;
+        // justify-content: space-between;
+        position          : relative;
+        >#body-left{
+            width     : 100%;
+            box-sizing: border-box;
+            padding   : .5rem;
+            background: #fff;
+            overflow  : hidden;
+            height    : 100%;
+        }
+        >#body-right{
+            width    : 3rem;
+            position : absolute;
+            right    : -3.5rem;
+            font-size: .5rem;
+            top      : 0;
+            ul{
+                list-style: none;
+                height    : 100%;
+                li{
+                    width          : 3rem;
+                    height         : 3rem;
+                    margin-bottom  : .5rem;
+                    display        : flex;
+                    align-items    : center;
+                    justify-content: center;
+                    background     : #fff;
+                    box-shadow     : $box-shadow;
+                    transition: all .2s;
+                    transform: scale(0);
+                    cursor: pointer;
+                    &:hover{
+                        box-shadow: 6px 6px 20px rgba(0, 0, 0, .5)
+                    }
+                    &:focus{
+                        outline: none;
+                    }
+                    &:active{
+                        transform: scale(.9);
+                        box-shadow: 1px 1px 5px rgba(0, 0, 0, .3);
+                    }
+                }
+            }
+        }
+        
+    }
+}
+
+.#{$name}-show{
+    transform: scale(1) !important;
+}
