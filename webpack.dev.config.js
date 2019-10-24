@@ -4,13 +4,13 @@ const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const {CleanWebpackPlugin} = require('clean-webpack-plugin');
 const webpack = require('webpack');
 module.exports = {
-    entry: './src/EditorPanel.ts', // 打包入口：指示 webpack 应该使用哪个模块，来作为构建其内部依赖图的开始
+    entry: './src/index.ts', // 打包入口：指示 webpack 应该使用哪个模块，来作为构建其内部依赖图的开始
     output: {
         path: path.resolve(__dirname, 'build'),
         filename: 'bundle.js',
-        library: 'HTMLEditor',
+        // library: 'HTMLEditor',
         // libraryTarget: 'umd',
-        umdNamedDefine: true
+        // umdNamedDefine: true
     }, // 出口
     resolve: {
         extensions: ['.tsx', '.ts', '.js','.scss'],
@@ -39,8 +39,7 @@ module.exports = {
                 test: /\.(sa|sc|c)ss$/,
                 include: [path.resolve(__dirname, 'src')],
                 use: [
-                    // 'style-loader',
-                    MiniCssExtractPlugin.loader,
+                    'style-loader',
                     'css-loader',
                     {
                         loader: 'postcss-loader',
@@ -74,12 +73,7 @@ module.exports = {
             filename: 'index.html',
             template: path.resolve(__dirname, 'public/index.html')
         }),
-        new MiniCssExtractPlugin({
-            filename: '[name].css',
-            chunkFilename: '[id].css'
-        }),
-        // new webpack.HotModuleReplacementPlugin(),
-        new CleanWebpackPlugin()
+        new webpack.HotModuleReplacementPlugin(),
     ] // 插件的配置：打包优化、资源管理和注入环境变量
 }
 if (module.hot) {
