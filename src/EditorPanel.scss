@@ -2,6 +2,8 @@
 $name : 'htmleditor';
 
 $box-shadow: 3px 3px 5px rgba(0, 0, 0, .25);
+$border-style: 1px ridge bisque;
+$background:rgba(255,255,255,.9);
 
 .#{$name}-panel{
     z-index   : 999;
@@ -13,7 +15,7 @@ $box-shadow: 3px 3px 5px rgba(0, 0, 0, .25);
     
     .#{$name}-btn{
         background   : none;
-        background   : #fff;
+        background   : $background;
         border       : none;
         width        : 2rem;
         height       : 1.5rem;
@@ -33,20 +35,16 @@ $box-shadow: 3px 3px 5px rgba(0, 0, 0, .25);
         }
     }
 
-
-
     ##{$name}-title{
-        width              : 100%;
-        background         : #fff;
-        padding            : .3rem .8rem;
-        box-sizing         : border-box;
-        font-size          : 1.5rem;
-        border-bottom-style: ridge;
-        border-bottom-width: 1px;
-        border-bottom-color: bisque;
-        display            : flex;
-        justify-content    : flex-end;
-        align-items        : center;
+        width          : 100%;
+        background     : $background;
+        padding        : .3rem .8rem;
+        box-sizing     : border-box;
+        font-size      : 1.5rem;
+        border-bottom  : $border-style;
+        display        : flex;
+        justify-content: flex-end;
+        align-items    : center;
         p{
             width: 100%;
         }
@@ -64,7 +62,7 @@ $box-shadow: 3px 3px 5px rgba(0, 0, 0, .25);
             width     : 100%;
             box-sizing: border-box;
             padding   : .5rem;
-            background: #fff;
+            background: $background;
             overflow  : hidden;
             height    : 100%;
         }
@@ -84,7 +82,7 @@ $box-shadow: 3px 3px 5px rgba(0, 0, 0, .25);
                     display        : flex;
                     align-items    : center;
                     justify-content: center;
-                    background     : #fff;
+                    background     : $background;
                     box-shadow     : $box-shadow;
                     transition: all .2s;
                     transform: scale(0);
@@ -102,10 +100,28 @@ $box-shadow: 3px 3px 5px rgba(0, 0, 0, .25);
                 }
             }
         }
-        
+    }
+    ##{$name}-footer{
+        border-top: $border-style;
+        background: $background;
+        padding: .3rem 0;
+        &:after{
+                content   : '.';
+                display   : block;
+                visibility: hidden;
+                clear     : both;
+                height: 0;
+        }
+        #body-confirm{
+            float: right;
+        }
     }
 }
 
 .#{$name}-show{
     transform: scale(1) !important;
+}
+
+.#{$name}-active{
+    border-radius: 50%;
 }

@@ -53,32 +53,45 @@ export default class HTMLEditor {
             element.x,
             element.y,
             this.element.clientWidth && this.element.clientWidth >= 300 ? this.element.clientWidth : 300,
-            this.element.clientHeight
+            this.element.clientHeight && this.element.clientHeight >= 100 ? this.element.clientHeight : 100
         );
 
         if (element.x > window.innerWidth / 2) {
             // 右边
-            panelPosition.left = false;
-
+            panelPosition._x = panelPosition._x - panelPosition._width > 0 ? panelPosition._x - panelPosition._width : 10;
+            
             /**
-             * 右边碰撞检测
+             * 右边点击碰撞右侧检测
              */
             if (panelPosition._x + 20 > window.innerWidth) {
                 panelPosition._x -= 20;
             }
+        } 
 
-        } else {
-            // 左边
-            panelPosition.left = true;
-
+        if (element.y > window.innerHeight/2) {
             /**
-             * 左边碰撞检测
+             * 下半部
              */
-            if (panelPosition._x + panelPosition._width > window.innerWidth) {
-                panelPosition._width = window.innerWidth - 20;
-                panelPosition._x     = 2;
+            const heigth = (<HTMLElement>this.EditorPanel.getElement('panel')).clientHeight;
+
+            console.log(heigth,window.innerHeight);
+
+            panelPosition._y = panelPosition._y - heigth > 0 ? panelPosition._y - heigth : 10;
+
+            if ( heigth > window.innerHeight) {
+                panelPosition._y -= (heigth-window.innerHeight);
             }
         }
+        
+
+        /**
+         * 碰撞两侧检测
+         */
+        if (panelPosition._x + panelPosition._width > window.innerWidth) {
+            panelPosition._width = window.innerWidth - 20;
+            panelPosition._x = 10;
+        }
+
 
 
         /**
@@ -125,18 +138,47 @@ export default class HTMLEditor {
         );
 
         /**
+         * 设置面板点击
+         */
+
+        (this.EditorPanel.getElement('body_right_ul_li') as Array<HTMLLIElement>).map(li=>{
+            li.addEventListener('click',(e:MouseEvent)=>{
+                console.log(
+                    (e.target as HTMLElement).id
+                );
+                const id = (e.target as HTMLElement).id;
+                let text = '';
+                if (id != 'content') {
+                    text = this.element.getAttribute(id);
+                }else{
+                    text = this.element.innerHTML;
+                }
+                this.EditorPanel.setBodyContent(text,id);
+            });
+        });
+
+        /**
          * 设置面板默认内容
          */
         this.EditorPanel.setBodyContent(
             this.element.innerHTML
         );
 
+        (this.EditorPanel.getElement('footer_btn') as HTMLButtonElement).addEventListener('click',()=>{
+            const info =  this.EditorPanel.getBodyContent();
+            console.log(info);
+            
+            if (info[1] != 'content') {
+                this.element.setAttribute(info[1],info[0]);
+            }else{
+                this.element.innerHTML = info[0];
+            }
+        });
         
         /**
          * 显示面板
          */
         this.EditorPanel.show();
-
 
         // this.EditorPanel.setBox(panelPosition)
         //     .setTitle(`<${this.element.tagName.toLowerCase()}>标签`)
