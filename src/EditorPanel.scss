@@ -6,6 +6,8 @@ $border-style: 1px ridge bisque;
 $background:rgba(255,255,255,.9);
 
 .#{$name}-panel{
+    margin: 0;
+    padding: 0;
     z-index   : 999;
     box-sizing: border-box;
     box-shadow: $box-shadow;
@@ -50,7 +52,8 @@ $background:rgba(255,255,255,.9);
         justify-content: flex-end;
         align-items    : center;
         p{
-            width: 100%;
+            width : 100%;
+            margin: 0;
         }
     }
     ##{$name}-body{
@@ -78,7 +81,8 @@ $background:rgba(255,255,255,.9);
             top      : 0;
             ul{
                 list-style: none;
-                height    : 100%;
+                padding: 0;
+                height : 100%;
                 li{
                     width          : 3rem;
                     height         : 3rem;
