@@ -64,10 +64,13 @@ export default class EditorPanel {
      * 设置面板内容
      * @param content string
      */
-    public setBodyContent(content:string,id:string = 'content')
+    public setBodyContent(content:string,id:string = 'content',e:HTMLElement = undefined )
     {
         this.elements.body_left.textContent = content;
         this.elements.body_left.setAttribute('cid', id);
+        if (e) {
+            this.setAttrAction(e);
+        }
     }
 
     public getBodyContent():Array<string>
@@ -161,6 +164,21 @@ export default class EditorPanel {
                 EditorPanel.getClassName('show')
             );
         }
+    }
+
+
+    public setAttrAction(e:HTMLElement)
+    {
+        // e.classList.add();
+        console.log(e.parentNode);
+        const clss = EditorPanel.getClassName('active');
+        let even = document.querySelector('.'+clss);
+        console.log(even);
+        if (even) {
+            even.classList.remove(clss);
+        }
+        
+        e.classList.add(clss);
     }
 
 }

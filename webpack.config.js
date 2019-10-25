@@ -2,15 +2,19 @@ const path = require('path');
 const htmlWebpackPlugin = require('html-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const {CleanWebpackPlugin} = require('clean-webpack-plugin');
-const webpack = require('webpack');
+
+
 module.exports = {
-    entry: './src/EditorPanel.ts', // 打包入口：指示 webpack 应该使用哪个模块，来作为构建其内部依赖图的开始
+    entry: './src/HTMLEditor.ts', // 打包入口：指示 webpack 应该使用哪个模块，来作为构建其内部依赖图的开始
     output: {
-        path: path.resolve(__dirname, 'build'),
-        filename: 'bundle.js',
-        library: 'HTMLEditor',
+        path            : path.resolve(__dirname, 'build'),
+        filename        : 'HTMLEditor.js',
+        library         : 'HTMLEditor',
+        // libraryName  : 'HTMLEditor',
         // libraryTarget: 'umd',
-        umdNamedDefine: true
+        umdNamedDefine  : true,
+        // globalObject    : 'this',
+        libraryExport   : 'default'
     }, // 出口
     resolve: {
         extensions: ['.tsx', '.ts', '.js','.scss'],

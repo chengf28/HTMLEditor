@@ -74,8 +74,6 @@ export default class HTMLEditor {
              */
             const heigth = (<HTMLElement>this.EditorPanel.getElement('panel')).clientHeight;
 
-            console.log(heigth,window.innerHeight);
-
             panelPosition._y = panelPosition._y - heigth > 0 ? panelPosition._y - heigth : 10;
 
             if ( heigth > window.innerHeight) {
@@ -143,17 +141,15 @@ export default class HTMLEditor {
 
         (this.EditorPanel.getElement('body_right_ul_li') as Array<HTMLLIElement>).map(li=>{
             li.addEventListener('click',(e:MouseEvent)=>{
-                console.log(
-                    (e.target as HTMLElement).id
-                );
-                const id = (e.target as HTMLElement).id;
-                let text = '';
-                if (id != 'content') {
-                    text = this.element.getAttribute(id);
+                const onClick = (e.target as HTMLElement);
+                let text      = '';
+                this.EditorPanel.setAttrAction(onClick);
+                if (onClick.id != 'content') {
+                    text = this.element.getAttribute(onClick.id);
                 }else{
                     text = this.element.innerHTML;
                 }
-                this.EditorPanel.setBodyContent(text,id);
+                this.EditorPanel.setBodyContent(text,onClick.id,onClick);
             });
         });
 
@@ -161,13 +157,11 @@ export default class HTMLEditor {
          * 设置面板默认内容
          */
         this.EditorPanel.setBodyContent(
-            this.element.innerHTML
+            this.element.innerHTML,
         );
 
         (this.EditorPanel.getElement('footer_btn') as HTMLButtonElement).addEventListener('click',()=>{
             const info =  this.EditorPanel.getBodyContent();
-            console.log(info);
-            
             if (info[1] != 'content') {
                 this.element.setAttribute(info[1],info[0]);
             }else{
