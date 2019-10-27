@@ -6,6 +6,10 @@ $border-style: 1px ridge bisque;
 $background:rgba(255,255,255,.9);
 
 .#{$name}-panel{
+    *{
+        margin: 0;
+        padding: 0;
+    }
     z-index   : 999;
     box-sizing: border-box;
     box-shadow: $box-shadow;
@@ -127,6 +131,5 @@ $background:rgba(255,255,255,.9);
 }
 
 .#{$name}-active{
-    border-radius: 50%;
-    transition-delay: .1s;
+    color: crimson;
 }

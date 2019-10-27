@@ -21,6 +21,7 @@ export default class HTMLEditor {
     public static addLinsener(element: HTMLElement | HTMLDocument | Element): HTMLEditor {
         let instance = HTMLEditor.getInstance();
         element.addEventListener('click', (e: MouseEvent) => {
+            e.preventDefault();
             /**
              * 已经在点击状态下,不做处理
              */
@@ -80,7 +81,6 @@ export default class HTMLEditor {
                 panelPosition._y -= (heigth-window.innerHeight);
             }
         }
-        
 
         /**
          * 碰撞两侧检测
@@ -89,8 +89,6 @@ export default class HTMLEditor {
             panelPosition._width = window.innerWidth - 20;
             panelPosition._x = 10;
         }
-
-
 
         /**
          * 设置关闭按钮
@@ -131,21 +129,26 @@ export default class HTMLEditor {
         /**
          * 设置面板属性
          */
+        let attrs = this.element.getAttributeNames()
+        attrs.unshift('content');
         this.EditorPanel.setBodyAttr(
-            this.element.getAttributeNames()
+            attrs
         );
+        
 
+        let AttrsElemenst = (this.EditorPanel.getElement('body_right_ul_li') as Array<HTMLLIElement>);
+        console.log(AttrsElemenst);
+        // 设置默认
+        this.EditorPanel.setAttrAction(AttrsElemenst[0]);
         /**
          * 设置面板点击
          */
-
-        (this.EditorPanel.getElement('body_right_ul_li') as Array<HTMLLIElement>).map(li=>{
+        AttrsElemenst.map(li=>{
             li.addEventListener('click',(e:MouseEvent)=>{
                 const onClick = (e.target as HTMLElement);
                 let text      = '';
-                this.EditorPanel.setAttrAction(onClick);
                 if (onClick.id != 'content') {
-                    text = this.element.getAttribute(onClick.id);
+                    text = this.element.getAttribute(onClick.id);   
                 }else{
                     text = this.element.innerHTML;
                 }
@@ -160,6 +163,9 @@ export default class HTMLEditor {
             this.element.innerHTML,
         );
 
+        /**
+         * 设置面板确认按键
+         */
         (this.EditorPanel.getElement('footer_btn') as HTMLButtonElement).addEventListener('click',()=>{
             const info =  this.EditorPanel.getBodyContent();
             if (info[1] != 'content') {
@@ -173,14 +179,6 @@ export default class HTMLEditor {
          * 显示面板
          */
         this.EditorPanel.show();
-
-        // this.EditorPanel.setBox(panelPosition)
-        //     .setTitle(`<${this.element.tagName.toLowerCase()}>标签`)
-        //     .setContent(this.element.innerHTML).show(1);
-
-        // this.EditorPanel.getTitleBtn().addEventListener('click', () => {
-        // this.EditorPanel.close();
-        // }
     }
 
 
