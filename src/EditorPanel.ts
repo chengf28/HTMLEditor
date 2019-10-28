@@ -1,5 +1,5 @@
 import './EditorPanel.scss';
-import { clickPosition, PanelElements, panelLi } from './global';
+import { clickPosition, PanelElements, attrs,zh_cn} from './global';
 import Clickdom from './HTMLEditor';
 
 export default class EditorPanel {
@@ -7,6 +7,8 @@ export default class EditorPanel {
     private elements: PanelElements
 
     static readonly className = 'htmleditor';
+
+    private zh_cn = new zh_cn;
 
     public static getClassName(name: string = null) {
         if (name) {
@@ -44,15 +46,16 @@ export default class EditorPanel {
      * 面板属性设置
      * @param lis Array<string>
      */
-    public setBodyAttr(lis:Array<string>) {
+    public setBodyAttr(lis:Array<attrs>) {
         if (lis.length > 0) {
             this.elements.detail_btn.hidden = false;
             for (const attr in lis) {
                 let li         = document.createElement('li');
                 this.elements.body_right_ul_li.push(li);
                 this.elements.body_right_ul.append(li);
-                li.textContent = lis[attr];
-                li.id          = lis[attr];
+                li.textContent = this.zh_cn[lis[attr]['name']];
+                li.id          = lis[attr]['name'];
+                li.setAttribute('atype',lis[attr]['type']);
             }
         }else{
             this.elements.detail_btn.hidden = true;
@@ -135,8 +138,9 @@ export default class EditorPanel {
          */
         this.elements.body_right_ul_li.forEach(li => {
             li.remove();
-            this.elements.body_right_ul_li.shift();
         });
+
+        this.elements.body_right_ul_li = [];
     }
 
     /**

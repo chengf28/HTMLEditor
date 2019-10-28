@@ -17,9 +17,9 @@ export class clickPosition {
 
     get x(): string {
 
-            return this._x.toString() + 'px';
+        return this._x.toString() + 'px';
 
-        
+
     }
 
     get y(): string {
@@ -60,39 +60,39 @@ export class PanelElements {
 
     body_right_ul_li: Array<HTMLLIElement>;
 
-    footer:HTMLDivElement;
+    footer: HTMLDivElement;
 
-    footer_btn:HTMLButtonElement;
+    footer_btn: HTMLButtonElement;
 
     constructor() {
         /**
          * 抬头
          */
-        this.title_p          = document.createElement('p');
-        this.cancel_btn       = document.createElement('button');
-        this.detail_btn       = document.createElement('button');
-        this.title            = document.createElement('div');
+        this.title_p = document.createElement('p');
+        this.cancel_btn = document.createElement('button');
+        this.detail_btn = document.createElement('button');
+        this.title = document.createElement('div');
         this.title.append(this.title_p);
         this.title.append(this.detail_btn);
         this.title.append(this.cancel_btn);
-        
+
         /**
          * 主体
          */
         this.body_right_ul_li = [];
-        this.body_left        = document.createElement('div');
-        this.body_right_ul    = document.createElement('ul');
-        this.body_right       = document.createElement('div');
-        this.body             = document.createElement('div');
+        this.body_left = document.createElement('div');
+        this.body_right_ul = document.createElement('ul');
+        this.body_right = document.createElement('div');
+        this.body = document.createElement('div');
         this.body_right.append(this.body_right_ul);
         this.body.append(this.body_left);
         this.body.append(this.body_right);
-        
+
         /**
          * 结尾
          */
         this.footer_btn = document.createElement('button');
-        this.footer     = document.createElement('div');
+        this.footer = document.createElement('div');
         this.footer.append(this.footer_btn);
 
         /**
@@ -106,4 +106,22 @@ export class PanelElements {
 }
 export interface panelLi {
     [key: string]: Function
+}
+
+export interface attrs {
+    [key: string]: string
+    name: string,
+    type: string,
+}
+
+export class zh_cn {
+    [key: string]: any
+    background = '背景';
+    color = '字体颜色';
+    content = '内容';
+    id = 'id';
+    class = '类';
+    src = '图片链接';
+    href = '网页链接';
+
 }

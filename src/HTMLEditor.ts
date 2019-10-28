@@ -1,5 +1,5 @@
 import EditorPanel from "./EditorPanel";
-import { clickPosition, panelLi } from "./global";
+import { clickPosition, panelLi, attrs } from "./global";
 
 export default class HTMLEditor {
 
@@ -108,14 +108,14 @@ export default class HTMLEditor {
                 console.log(isShow);
                 if (!isShow) {
                     this.EditorPanel.showAttr();
+                    isShow = true;
                 }else{
                     this.EditorPanel.hideAttr();
+                    isShow = false;
                 }
-                isShow = !isShow;
             });
         }
 
-        
 
         /**
          * 初始化面板
@@ -129,15 +129,35 @@ export default class HTMLEditor {
         /**
          * 设置面板属性
          */
-        let attrs = this.element.getAttributeNames()
-        attrs.unshift('content');
+
+        let attrs:Array<attrs> = [
+            {
+                name:'content',
+                type:'content',
+            },
+            {
+                name:'background',
+                type:'css',
+            },
+            {
+                name:'color',
+                type:'css',
+            }
+        ];
+
+        this.element.getAttributeNames().map(attr=>{
+            attrs.push({
+                name:attr,
+                type:'attr'
+            });
+        })
+        
         this.EditorPanel.setBodyAttr(
             attrs
         );
         
 
         let AttrsElemenst = (this.EditorPanel.getElement('body_right_ul_li') as Array<HTMLLIElement>);
-        console.log(AttrsElemenst);
         // 设置默认
         this.EditorPanel.setAttrAction(AttrsElemenst[0]);
         /**
@@ -147,11 +167,22 @@ export default class HTMLEditor {
             li.addEventListener('click',(e:MouseEvent)=>{
                 const onClick = (e.target as HTMLElement);
                 let text      = '';
-                if (onClick.id != 'content') {
-                    text = this.element.getAttribute(onClick.id);   
-                }else{
+                const type    = onClick.getAttribute('atype');
+                if (type == 'content') {
                     text = this.element.innerHTML;
+                    
+                }else if (type == 'css')
+                {
+                    text = window.getComputedStyle(this.element).getPropertyValue(onClick.id)
+                    // text = this.element.style;
+                }else if(type == 'attr')
+                {
+                    text = this.element.getAttribute(onClick.id);
                 }
+                // if (onClick.id != 'content') {
+                // }else{
+                //     text = this.element.innerHTML;
+                // }
                 this.EditorPanel.setBodyContent(text,onClick.id,onClick);
             });
         });
