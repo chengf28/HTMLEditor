@@ -47,7 +47,6 @@ export default class EditorPanel {
     public setBodyAttr(lis:Array<string>) {
         if (lis.length > 0) {
             this.elements.detail_btn.hidden = false;
-            lis.unshift('content');
             for (const attr in lis) {
                 let li         = document.createElement('li');
                 this.elements.body_right_ul_li.push(li);
@@ -136,6 +135,7 @@ export default class EditorPanel {
          */
         this.elements.body_right_ul_li.forEach(li => {
             li.remove();
+            this.elements.body_right_ul_li.shift();
         });
     }
 
@@ -169,15 +169,11 @@ export default class EditorPanel {
 
     public setAttrAction(e:HTMLElement)
     {
-        // e.classList.add();
-        console.log(e.parentNode);
         const clss = EditorPanel.getClassName('active');
-        let even = document.querySelector('.'+clss);
-        console.log(even);
+        let even   = document.querySelector('.'+clss);
         if (even) {
             even.classList.remove(clss);
         }
-        
         e.classList.add(clss);
     }
 
