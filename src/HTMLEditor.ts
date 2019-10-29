@@ -179,11 +179,7 @@ export default class HTMLEditor {
                 {
                     text = this.element.getAttribute(onClick.id);
                 }
-                // if (onClick.id != 'content') {
-                // }else{
-                //     text = this.element.innerHTML;
-                // }
-                this.EditorPanel.setBodyContent(text,onClick.id,onClick);
+                this.EditorPanel.setBodyContent(text,onClick);
             });
         });
 
@@ -199,10 +195,13 @@ export default class HTMLEditor {
          */
         (this.EditorPanel.getElement('footer_btn') as HTMLButtonElement).addEventListener('click',()=>{
             const info =  this.EditorPanel.getBodyContent();
-            if (info[1] != 'content') {
-                this.element.setAttribute(info[1],info[0]);
-            }else{
+            if (info[2] == 'content') {
                 this.element.innerHTML = info[0];
+            }else if (info[2] == 'css') {
+                this.element.style[info[1]] = info[0];
+                console.log(this.element.style[info[1]]);
+            }else{
+                this.element.setAttribute(info[1], info[0]);
             }
         });
         

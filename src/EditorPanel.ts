@@ -1,5 +1,6 @@
 import './EditorPanel.scss';
-import { clickPosition, PanelElements, attrs,zh_cn} from './global';
+import { clickPosition, PanelElements, attrs} from './global';
+import ZH_CN from "./zh_cn";
 import Clickdom from './HTMLEditor';
 
 export default class EditorPanel {
@@ -7,8 +8,6 @@ export default class EditorPanel {
     private elements: PanelElements
 
     static readonly className = 'htmleditor';
-
-    private zh_cn = new zh_cn;
 
     public static getClassName(name: string = null) {
         if (name) {
@@ -53,7 +52,7 @@ export default class EditorPanel {
                 let li         = document.createElement('li');
                 this.elements.body_right_ul_li.push(li);
                 this.elements.body_right_ul.append(li);
-                li.textContent = this.zh_cn[lis[attr]['name']];
+                li.textContent = ZH_CN[lis[attr]['name']];
                 li.id          = lis[attr]['name'];
                 li.setAttribute('atype',lis[attr]['type']);
             }
@@ -66,10 +65,9 @@ export default class EditorPanel {
      * 设置面板内容
      * @param content string
      */
-    public setBodyContent(content:string,id:string = 'content',e:HTMLElement = undefined )
+    public setBodyContent(content:string,e:HTMLElement = undefined )
     {
         this.elements.body_left.textContent = content;
-        this.elements.body_left.setAttribute('cid', id);
         if (e) {
             this.setAttrAction(e);
         }
@@ -77,9 +75,14 @@ export default class EditorPanel {
 
     public getBodyContent():Array<string>
     {
+        
+        const active = document.querySelector(
+            '.' + EditorPanel.getClassName('active')
+        )
         return [
             this.elements.body_left.textContent,
-            this.elements.body_left.getAttribute('cid')
+            active.id,
+            active.getAttribute('atype')
         ];
     }
 
