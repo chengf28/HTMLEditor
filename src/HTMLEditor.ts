@@ -1,5 +1,7 @@
 import EditorPanel from "./EditorPanel";
 import { clickPosition, panelLi, attrs } from "./global";
+import { timingSafeEqual } from "crypto";
+import ColorPanel from "./ColorPanel";
 
 export default class HTMLEditor {
 
@@ -12,6 +14,8 @@ export default class HTMLEditor {
     private element: HTMLElement;
 
     private EditorPanel: EditorPanel;
+
+    private ColorPanel: ColorPanel;
 
     constructor() {
         this.EditorPanel = new EditorPanel;
@@ -60,16 +64,16 @@ export default class HTMLEditor {
         if (element.x > window.innerWidth / 2) {
             // 右边
             panelPosition._x = panelPosition._x - panelPosition._width > 0 ? panelPosition._x - panelPosition._width : 10;
-            
+
             /**
              * 右边点击碰撞右侧检测
              */
             if (panelPosition._x + 20 > window.innerWidth) {
                 panelPosition._x -= 20;
             }
-        } 
+        }
 
-        if (element.y > window.innerHeight/2) {
+        if (element.y > window.innerHeight / 2) {
             /**
              * 下半部
              */
@@ -77,8 +81,8 @@ export default class HTMLEditor {
 
             panelPosition._y = panelPosition._y - heigth > 0 ? panelPosition._y - heigth : 10;
 
-            if ( heigth > window.innerHeight) {
-                panelPosition._y -= (heigth-window.innerHeight);
+            if (heigth > window.innerHeight) {
+                panelPosition._y -= (heigth - window.innerHeight);
             }
         }
 
@@ -94,6 +98,7 @@ export default class HTMLEditor {
          * 设置关闭按钮
          */
         let cancel_btn = this.EditorPanel.getElement('cancel_btn');
+        let cancel_btn_second = this.EditorPanel.getElement('cancel_btn_second');
         let detail_btn = this.EditorPanel.getElement('detail_btn');
 
         if (cancel_btn instanceof HTMLElement) {
@@ -102,14 +107,22 @@ export default class HTMLEditor {
             });
         }
 
-        let isShow:boolean = false;
+        if (cancel_btn_second instanceof HTMLElement) {
+            cancel_btn_second.addEventListener('click', () => {
+                this.close();
+            });
+        }
+
+
+
+        let isShow: boolean = false;
         if (detail_btn instanceof HTMLElement) {
             detail_btn.addEventListener('click', () => {
                 console.log(isShow);
                 if (!isShow) {
                     this.EditorPanel.showAttr();
                     isShow = true;
-                }else{
+                } else {
                     this.EditorPanel.hideAttr();
                     isShow = false;
                 }
@@ -130,32 +143,47 @@ export default class HTMLEditor {
          * 设置面板属性
          */
 
-        let attrs:Array<attrs> = [
+        let attrs: Array<attrs> = [
             {
-                name:'content',
-                type:'content',
+                name: 'content',
+                type: 'content',
             },
-            {
-                name:'background',
-                type:'css',
-            },
-            {
-                name:'color',
-                type:'css',
-            }
         ];
 
-        this.element.getAttributeNames().map(attr=>{
+        const styles: CSSStyleDeclaration = window.getComputedStyle(this.element, null);
+
+        if (styles.getPropertyValue('background-image') != 'none') {
             attrs.push({
-                name:attr,
-                type:'attr'
+                name: 'background-image',
+                type: 'css'
+            });
+        }
+
+        if (styles.getPropertyValue('background-color') != 'none') {
+            attrs.push({
+                name: 'background-color',
+                type: 'css'
+            });
+        }
+
+        if (styles.getPropertyValue('color') != 'none') {
+            attrs.push({
+                name: 'color',
+                type: 'css'
+            });
+        }
+
+        this.element.getAttributeNames().map(attr => {
+            attrs.push({
+                name: attr,
+                type: 'attr'
             });
         })
-        
+
         this.EditorPanel.setBodyAttr(
             attrs
         );
-        
+
 
         let AttrsElemenst = (this.EditorPanel.getElement('body_right_ul_li') as Array<HTMLLIElement>);
         // 设置默认
@@ -163,23 +191,38 @@ export default class HTMLEditor {
         /**
          * 设置面板点击
          */
-        AttrsElemenst.map(li=>{
-            li.addEventListener('click',(e:MouseEvent)=>{
+        AttrsElemenst.map(li => {
+            li.addEventListener('click', (e: MouseEvent) => {
                 const onClick = (e.target as HTMLElement);
-                let text      = '';
-                const type    = onClick.getAttribute('atype');
+                let text = '';
+                const type = onClick.getAttribute('atype');
+                this.EditorPanel.removeColorPanel();
                 if (type == 'content') {
                     text = this.element.innerHTML;
                     
-                }else if (type == 'css')
-                {
-                    text = window.getComputedStyle(this.element).getPropertyValue(onClick.id)
-                    // text = this.element.style;
-                }else if(type == 'attr')
-                {
+                } else if (type == 'css') {
+                    text = styles.getPropertyValue(onClick.id);
+                    if (onClick.id == 'background-image') {
+                        text = text.split('"')[1];
+                        if (text == window.location.href) {
+                            text = '';
+                        }
+                    }
+                    if (onClick.id.indexOf('color') >= 0) {
+                        this.EditorPanel.addColorPanel();
+                        const rgb = text.match(
+                            /\((\d+),\s?(\d+),\s?(\d+)\)/
+                        );
+                        if (rgb) {
+                            this.EditorPanel.setBodyBG(parseInt(rgb[1]),parseInt(rgb[2]),parseInt(rgb[3]));
+                        }
+                        // this.ColorPanel.init(this.EditorPanel.getElement('panel') as HTMLElement,this.EditorPanel);
+                    }
+                } else if (type == 'attr') {
                     text = this.element.getAttribute(onClick.id);
                 }
-                this.EditorPanel.setBodyContent(text,onClick);
+
+                this.EditorPanel.setBodyContent(text, onClick);
             });
         });
 
@@ -187,24 +230,28 @@ export default class HTMLEditor {
          * 设置面板默认内容
          */
         this.EditorPanel.setBodyContent(
-            this.element.innerHTML,
+            this.element.innerHTML
         );
+        console.log(this.element.innerHTML);
 
         /**
          * 设置面板确认按键
          */
-        (this.EditorPanel.getElement('footer_btn') as HTMLButtonElement).addEventListener('click',()=>{
-            const info =  this.EditorPanel.getBodyContent();
+        (this.EditorPanel.getElement('footer_btn') as HTMLButtonElement).addEventListener('click', () => {
+            const info = this.EditorPanel.getBodyContent();
             if (info[2] == 'content') {
                 this.element.innerHTML = info[0];
-            }else if (info[2] == 'css') {
+            } else if (info[2] == 'css') {
+                if (info[1] == 'background-image') {
+                    info[1] = 'backgroundImage';
+                    info[0] = 'url("' + info[0] + '")';
+                }
                 this.element.style[info[1]] = info[0];
-                console.log(this.element.style[info[1]]);
-            }else{
+            } else {
                 this.element.setAttribute(info[1], info[0]);
             }
         });
-        
+
         /**
          * 显示面板
          */

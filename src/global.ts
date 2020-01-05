@@ -16,10 +16,7 @@ export class clickPosition {
     }
 
     get x(): string {
-
         return this._x.toString() + 'px';
-
-
     }
 
     get y(): string {
@@ -47,6 +44,7 @@ export class PanelElements {
     title_p: HTMLParagraphElement;
 
     cancel_btn: HTMLButtonElement;
+    cancel_btn_second: HTMLButtonElement;
 
     detail_btn: HTMLButtonElement;
 
@@ -70,6 +68,7 @@ export class PanelElements {
          */
         this.title_p = document.createElement('p');
         this.cancel_btn = document.createElement('button');
+        this.cancel_btn_second = document.createElement('button');
         this.detail_btn = document.createElement('button');
         this.title = document.createElement('div');
         this.title.append(this.title_p);
@@ -93,7 +92,9 @@ export class PanelElements {
          */
         this.footer_btn = document.createElement('button');
         this.footer = document.createElement('div');
-        this.footer.append(this.footer_btn);
+
+
+        this.footer.append(this.cancel_btn_second, this.footer_btn);
 
         /**
          * 整体
@@ -102,6 +103,15 @@ export class PanelElements {
         this.panel.append(this.title);
         this.panel.append(this.body);
         this.panel.append(this.footer);
+    }
+}
+
+export class ColorPanelElements {
+    html: HTMLCanvasElement;
+    canvas: CanvasRenderingContext2D;
+    constructor() {
+        this.html = document.createElement('canvas');
+        this.canvas = this.html.getContext('2d');
     }
 }
 export interface panelLi {

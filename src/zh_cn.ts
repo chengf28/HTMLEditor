@@ -1,5 +1,6 @@
 export default{
-    'background' : '背景',
+    'background-image' : '背景图',
+    'background-color':'背景色',
     'color' : '字体颜色',
     'content' : '内容',
     'id' : 'id',
