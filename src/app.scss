@@ -1,14 +1,12 @@
-// *{
-//     margin: 0;
-//     padding: 0;
-// }
+*{
+    margin: 0;
+    padding: 0;
+}
 #parent{
     background: #000;
     position: absolute;
     width:100%;
-    left: 100px;
     height: 200px;
-    padding: 20px;
     #box{
         p{
             color: #fff;

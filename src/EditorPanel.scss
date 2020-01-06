@@ -15,7 +15,7 @@ $background:rgb(255,255,255);
     box-shadow: $box-shadow;
     transition: transform .3s;
     position: absolute;
-    width: 50%;
+    width: 500px;
     transform: scale(0);
     
     .#{$name}-btn{
@@ -62,7 +62,6 @@ $background:rgb(255,255,255);
     ##{$name}-body{
         border            : none;
         width             : 100%;
-        min-height        : 100px;
         word-wrap         : break-word;
         box-sizing        : border-box;
         // display        : flex;

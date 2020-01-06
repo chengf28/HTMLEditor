@@ -1,5 +1,5 @@
 import EditorPanel from "./EditorPanel";
-import { clickPosition, panelLi, attrs } from "./global";
+import { clickPosition, panelLi, attrs, PanelElements } from "./global";
 import { timingSafeEqual } from "crypto";
 import ColorPanel from "./ColorPanel";
 
@@ -56,21 +56,15 @@ export default class HTMLEditor {
          */
         let panelPosition: clickPosition = new clickPosition(
             element.x,
-            element.y,
-            this.element.clientWidth && this.element.clientWidth >= 300 ? this.element.clientWidth : 300,
-            this.element.clientHeight && this.element.clientHeight >= 100 ? this.element.clientHeight : 100
+            element.y
         );
 
-        if (element.x > window.innerWidth / 2) {
-            // 右边
-            panelPosition._x = panelPosition._x - panelPosition._width > 0 ? panelPosition._x - panelPosition._width : 10;
 
-            /**
-             * 右边点击碰撞右侧检测
-             */
-            if (panelPosition._x + 20 > window.innerWidth) {
-                panelPosition._x -= 20;
-            }
+        
+        // 点击点在右侧
+        if (element.x + 500 > window.innerWidth) {
+            panelPosition._x = panelPosition._x - ((element.x + 500) - window.innerWidth) - 100;
+            
         }
 
         if (element.y > window.innerHeight / 2) {
@@ -86,13 +80,13 @@ export default class HTMLEditor {
             }
         }
 
-        /**
-         * 碰撞两侧检测
-         */
-        if (panelPosition._x + panelPosition._width > window.innerWidth) {
-            panelPosition._width = window.innerWidth - 20;
-            panelPosition._x = 10;
-        }
+        // /**
+        //  * 碰撞两侧检测
+        //  */
+        // if (panelPosition._x + panelPosition._width > window.innerWidth) {
+        //     panelPosition._width = window.innerWidth - 20;
+        //     panelPosition._x = 10;
+        // }
 
         /**
          * 设置关闭按钮
@@ -118,7 +112,6 @@ export default class HTMLEditor {
         let isShow: boolean = false;
         if (detail_btn instanceof HTMLElement) {
             detail_btn.addEventListener('click', () => {
-                console.log(isShow);
                 if (!isShow) {
                     this.EditorPanel.showAttr();
                     isShow = true;
@@ -232,7 +225,6 @@ export default class HTMLEditor {
         this.EditorPanel.setBodyContent(
             this.element.innerHTML
         );
-        console.log(this.element.innerHTML);
 
         /**
          * 设置面板确认按键
