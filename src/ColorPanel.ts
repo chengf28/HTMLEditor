@@ -5,7 +5,7 @@ export default class ColorPanel {
 
     private elements: ColorPanelElements;
 
-    public constructor(elem:HTMLElement) {
+    public constructor(elem: HTMLElement) {
         this.elements = new ColorPanelElements;
         elem.prepend(this.elements.html);
         // 将canva 宽度设置层和父级一样
@@ -20,7 +20,7 @@ export default class ColorPanel {
          * 计算单个宽度
          */
         console.log(this.elements.html.width);
-        const cols = this.elements.canvas.createLinearGradient(0,0,this.elements.html.width,0);
+        const cols = this.elements.canvas.createLinearGradient(0, 0, this.elements.html.width, 0);
 
         cols.addColorStop(0, '#000');
 
@@ -36,23 +36,23 @@ export default class ColorPanel {
 
         cols.addColorStop(6 / 8, '#F0F');
 
-        cols.addColorStop(.85, '#FFF');
+        cols.addColorStop(7 / 8, '#FFF');
 
 
 
-        
+
         this.elements.canvas.fillStyle = cols;
         this.elements.canvas.fillRect(0, 0, this.elements.html.width, this.elements.html.height);
 
-            this.elements.html.addEventListener('click',e=>{
-                
-                let getColor = this.elements.canvas.getImageData(e.offsetX,e.offsetY,1,1);
-                console.log(getColor);
-                
-                const color = `rgb(${getColor.data[0]},${getColor.data[1]},${getColor.data[2]})`;
-                body.setBodyContent(color);
-                body.setBodyBG(getColor.data[0], getColor.data[1], getColor.data[2]);
-            });
+        this.elements.html.addEventListener('click', e => {
+
+            let getColor = this.elements.canvas.getImageData(e.offsetX, e.offsetY, 1, 1);
+            console.log(getColor);
+
+            const color = `rgb(${getColor.data[0]},${getColor.data[1]},${getColor.data[2]})`;
+            body.setBodyContent(color);
+            body.setBodyBG(getColor.data[0], getColor.data[1], getColor.data[2]);
+        });
     }
 
     /**
