@@ -114,7 +114,7 @@ $background:rgb(255,255,255);
     ##{$name}-footer{
         border-top: $border-style;
         background: $background;
-        padding: .3rem 0 .3rem .3rem;
+        padding: .3rem;
         canvas{
             height: 2rem;
             width: 100%;
