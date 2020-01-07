@@ -165,7 +165,7 @@ export default class HTMLEditor {
         /**
          * 设置面板标题
          */
-        const title = `<${this.element.tagName.toLowerCase()}>标签`;
+        const title = `${this.element.tagName.toLowerCase()}标签`;
         this.EditorPanel.setTitle(title);
 
         /**
@@ -287,7 +287,7 @@ export default class HTMLEditor {
             this.EditorPanel.setTitle('<b>修改成功</b>');
             setTimeout(() => {
                 this.EditorPanel.setTitle(title);
-            }, 1000);
+            }, 1500);
         });
 
         /**

@@ -43,7 +43,7 @@ export default class EditorPanel {
      * @param title string
      */
     public setTitle(title: string) {
-        this.elements.title_p.textContent = title;
+        this.elements.title_p.innerHTML = title;
     }
 
     /**
@@ -57,7 +57,7 @@ export default class EditorPanel {
                 let li = document.createElement('li');
                 this.elements.body_right_ul_li.push(li);
                 this.elements.body_right_ul.append(li);
-                li.textContent = ZH_CN[lis[attr]['name']];
+                li.innerHTML = ZH_CN[lis[attr]['name']];
 
                 li.id = lis[attr]['name'];
                 li.setAttribute('atype', lis[attr]['type']);
