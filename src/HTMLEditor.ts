@@ -1,7 +1,5 @@
 import EditorPanel from "./EditorPanel";
-import { clickPosition, panelLi, attrs, PanelElements } from "./global";
-import { timingSafeEqual } from "crypto";
-import ColorPanel from "./ColorPanel";
+import { clickPosition, attrs } from "./global";
 
 export default class HTMLEditor {
 
@@ -15,11 +13,50 @@ export default class HTMLEditor {
 
     private EditorPanel: EditorPanel;
 
-    private ColorPanel: ColorPanel;
 
     constructor() {
+        // 新建面板
         this.EditorPanel = new EditorPanel;
+        // 追加面板到根目录
         document.body.append(this.EditorPanel.getElement('panel') as HTMLElement);
+        this.movelistener();
+    }
+
+
+    private movelistener() {
+        let root = (this.EditorPanel.getElement('panel') as HTMLElement);
+        console.log(root);
+        let x: number;
+        let y: number;
+        let left: number;
+        let top: number;
+        let isMove: boolean = false;
+        // 鼠标按下
+        root.addEventListener('mousedown', (e: MouseEvent) => {
+            root.style.cursor = 'move';
+            x = e.clientX;
+            y = e.clientY;
+            left = root.offsetLeft;
+            top = root.offsetTop;
+            isMove = true;
+        });
+
+        // 鼠标放开
+        root.addEventListener('mouseup', () => {
+            root.style.cursor = 'default';
+            isMove = false;
+        });
+
+
+        window.addEventListener('mousemove', (e: MouseEvent) => {
+            if (!isMove) {
+                return;
+            }
+            root.style.left = e.clientX - (x - left) + 'px';
+            root.style.top = e.clientY - (y - top) + 'px';
+        });
+
+
     }
 
     public static addLinsener(element: HTMLElement | HTMLDocument | Element): HTMLEditor {
@@ -60,11 +97,11 @@ export default class HTMLEditor {
         );
 
 
-        
+
         // 点击点在右侧
         if (element.x + 600 > window.innerWidth) {
             panelPosition._x = panelPosition._x - ((element.x + 500) - window.innerWidth) - 100;
-            
+
         }
 
         if (element.y > window.innerHeight / 2) {
@@ -80,14 +117,6 @@ export default class HTMLEditor {
             }
         }
 
-        // /**
-        //  * 碰撞两侧检测
-        //  */
-        // if (panelPosition._x + panelPosition._width > window.innerWidth) {
-        //     panelPosition._width = window.innerWidth - 20;
-        //     panelPosition._x = 10;
-        // }
-
         /**
          * 设置关闭按钮
          */
@@ -95,19 +124,23 @@ export default class HTMLEditor {
         let cancel_btn_second = this.EditorPanel.getElement('cancel_btn_second');
         let detail_btn = this.EditorPanel.getElement('detail_btn');
 
+        /**
+         * 上面窗口关闭
+         */
         if (cancel_btn instanceof HTMLElement) {
             cancel_btn.addEventListener('click', () => {
                 this.close();
             });
         }
 
+        /**
+         * 上面窗口关闭
+         */
         if (cancel_btn_second instanceof HTMLElement) {
             cancel_btn_second.addEventListener('click', () => {
                 this.close();
             });
         }
-
-
 
         let isShow: boolean = false;
         if (detail_btn instanceof HTMLElement) {
@@ -192,7 +225,7 @@ export default class HTMLEditor {
                 this.EditorPanel.removeColorPanel();
                 if (type == 'content') {
                     text = this.element.innerHTML;
-                    
+
                 } else if (type == 'css') {
                     text = styles.getPropertyValue(onClick.id);
                     if (onClick.id == 'background-image') {
@@ -207,11 +240,14 @@ export default class HTMLEditor {
                             /\((\d+),\s?(\d+),\s?(\d+)\)/
                         );
                         if (rgb) {
-                            this.EditorPanel.setBodyBG(parseInt(rgb[1]),parseInt(rgb[2]),parseInt(rgb[3]));
+                            this.EditorPanel.setBodyBG(parseInt(rgb[1]), parseInt(rgb[2]), parseInt(rgb[3]));
                         }
                         // this.ColorPanel.init(this.EditorPanel.getElement('panel') as HTMLElement,this.EditorPanel);
                     }
                 } else if (type == 'attr') {
+                    if (onClick.id == 'href') {
+
+                    }
                     text = this.element.getAttribute(onClick.id);
                 }
 
