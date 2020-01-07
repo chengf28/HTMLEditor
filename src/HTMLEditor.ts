@@ -62,7 +62,7 @@ export default class HTMLEditor {
 
         
         // 点击点在右侧
-        if (element.x + 500 > window.innerWidth) {
+        if (element.x + 600 > window.innerWidth) {
             panelPosition._x = panelPosition._x - ((element.x + 500) - window.innerWidth) - 100;
             
         }
