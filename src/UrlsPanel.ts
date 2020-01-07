@@ -16,8 +16,8 @@ export default class UrlsPanel {
     {
         for (let i = 0; i < this.element.lis.length; i++) {
             this.element.lis[i].addEventListener('click',e=>{
-                let content = (<HTMLLIElement>e.target).innerText.split(':');
-                body.setBodyContent(content[1]);
+                let content = (<HTMLLIElement>e.target).innerText;
+                body.setBodyContent(content.substr(content.indexOf(':')+1));
             });
         }
     }

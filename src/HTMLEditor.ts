@@ -24,10 +24,11 @@ export default class HTMLEditor {
         this.movelistener();
     }
 
-
+    /**
+     * 监听移动
+     */
     private movelistener() {
         let root = (this.EditorPanel.getElement('panel') as HTMLElement);
-        console.log(root);
         let x: number;
         let y: number;
         let left: number;
