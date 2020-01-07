@@ -93,15 +93,15 @@ export default class EditorPanel {
      * @param position clickPostion
      */
     public init(position: clickPosition) {
-        // this.elements.panel.style.width = position.width;
-        this.elements.body_left.contentEditable = 'true';
-        // this.elements.body.style.height = position.height;
-        this.elements.panel.style.top = position.y;
-        this.elements.panel.style.left = position.x;
-        this.elements.cancel_btn.textContent = 'x';
+        // this.elements.panel.style.width          = position.width;
+        this.elements.body_left.contentEditable     = 'true';
+        // this.elements.body.style.height          = position.height;
+        this.elements.panel.style.top               = position.y;
+        this.elements.panel.style.left              = position.x;
+        this.elements.cancel_btn.textContent        = 'x';
         this.elements.cancel_btn_second.textContent = 'x';
-        this.elements.detail_btn.textContent = '≡';
-        this.elements.footer_btn.textContent = 'ok';
+        this.elements.detail_btn.textContent        = '≡';
+        this.elements.footer_btn.textContent        = 'ok';
     }
 
     /**
