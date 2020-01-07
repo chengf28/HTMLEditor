@@ -1,14 +1,16 @@
 import './EditorPanel.scss';
-import { clickPosition, PanelElements, attrs } from './global';
+import { clickPosition, PanelElements, attrs, UrlPanelElements, urls } from './global';
 import ZH_CN from "./zh_cn";
-import Clickdom from './HTMLEditor';
 import ColorPanel from './colorPanel';
+import UrlsPanel from './UrlsPanel';
 
 export default class EditorPanel {
 
     private elements: PanelElements;
 
     private colorPanel: ColorPanel;
+
+    private urlPanel: UrlsPanel;
 
     static readonly className = 'htmleditor';
 
@@ -56,7 +58,7 @@ export default class EditorPanel {
                 this.elements.body_right_ul_li.push(li);
                 this.elements.body_right_ul.append(li);
                 li.textContent = ZH_CN[lis[attr]['name']];
-                
+
                 li.id = lis[attr]['name'];
                 li.setAttribute('atype', lis[attr]['type']);
             }
@@ -70,7 +72,7 @@ export default class EditorPanel {
      * @param content string
      */
     public setBodyContent(content: string, e: HTMLElement = undefined) {
-        this.elements.body_left.innerText = content;
+        this.elements.body_left.innerText = content.trim();
         if (e) {
             this.setAttrAction(e);
         }
@@ -94,14 +96,14 @@ export default class EditorPanel {
      */
     public init(position: clickPosition) {
         // this.elements.panel.style.width          = position.width;
-        this.elements.body_left.contentEditable     = 'true';
+        this.elements.body_left.contentEditable = 'true';
         // this.elements.body.style.height          = position.height;
-        this.elements.panel.style.top               = position.y;
-        this.elements.panel.style.left              = position.x;
-        this.elements.cancel_btn.textContent        = 'x';
+        this.elements.panel.style.top = position.y;
+        this.elements.panel.style.left = position.x;
+        this.elements.cancel_btn.textContent = 'x';
         this.elements.cancel_btn_second.textContent = 'x';
-        this.elements.detail_btn.textContent        = '≡';
-        this.elements.footer_btn.textContent        = 'ok';
+        this.elements.detail_btn.textContent = '≡';
+        this.elements.footer_btn.textContent = 'ok';
     }
 
     /**
@@ -183,7 +185,10 @@ export default class EditorPanel {
         }
     }
 
-
+    /**
+     * 设置点击的元素的为Action状态
+     * @param e HTMLElement 点击的元素
+     */
     public setAttrAction(e: HTMLElement) {
         const clss = EditorPanel.getClassName('active');
         let even = document.querySelector('.' + clss);
@@ -193,20 +198,52 @@ export default class EditorPanel {
         e.classList.add(clss);
     }
 
+    /**
+     * 添加颜色面板
+     */
     public addColorPanel() {
-        this.colorPanel = new ColorPanel(this.elements.footer);
-        this.colorPanel.init(this);
+        if (!this.colorPanel) {
+            this.colorPanel = new ColorPanel(this.elements.footer);
+            this.colorPanel.init(this);    
+        }
     }
 
+    /**
+     * 移除颜色面板
+     */
     public removeColorPanel() {
         if (this.colorPanel) {
             this.elements.body_left.style.color = '#000';
             this.elements.body_left.style.backgroundColor = '#fff';
 
-            this.colorPanel.hide();    
+            this.colorPanel.hide();
+            this.colorPanel = undefined;
         }
     }
 
+    
+    public addUrlsPanel(urls: Array<urls>) {
+        if (!this.urlPanel) {
+            this.urlPanel = new UrlsPanel(this.elements.footer, 'url_list', urls);
+        }
+    }
+
+    /**
+     * removeUrlsPanel
+     */
+    public removeUrlsPanel() {
+        if (this.urlPanel) {
+            this.urlPanel.hide();
+            this.urlPanel = undefined;
+        }
+    }
+
+    /**
+     * 设置当前输入框背景颜色
+     * @param r number 红色值
+     * @param g number 绿色值
+     * @param b number 蓝色值
+     */
     public setBodyBG(r: number, g: number, b: number) {
         this.elements.body_left.style.backgroundColor = `rgb(${r},${g},${b})`;
         this.elements.body_left.style.color = `rgb(${255 - r},${255 - g},${255 - b})`;

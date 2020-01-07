@@ -23,6 +23,7 @@ export class clickPosition {
 
 }
 
+// 面板主体
 export class PanelElements {
     [key: string]: HTMLDivElement | HTMLParagraphElement | HTMLButtonElement | HTMLUListElement | Array<HTMLLIElement>;
 
@@ -94,7 +95,7 @@ export class PanelElements {
         this.panel.append(this.footer);
     }
 }
-
+// 色块选择面板
 export class ColorPanelElements {
     html: HTMLCanvasElement;
     canvas: CanvasRenderingContext2D;
@@ -102,7 +103,35 @@ export class ColorPanelElements {
         this.html = document.createElement('canvas');
         this.canvas = this.html.getContext('2d');
     }
+
 }
+// 链接地址面板
+export class UrlPanelElements {
+
+    rootElement: HTMLDivElement;
+
+    ulELement: HTMLUListElement;
+
+    lis: Array<HTMLLIElement>;
+
+    constructor() {
+        this.rootElement = document.createElement('div');
+        this.ulELement   = document.createElement('ul');
+        this.lis         = [];
+        this.rootElement.append(this.ulELement);
+    }
+
+    public addLis(urls : Array<urls>)
+    {
+        for (let i = 0; i < urls.length; i++) {
+            const li = document.createElement('li');
+            li.innerHTML = `<b>${urls[i].name}:</b>${urls[i].url}`
+            this.lis.push(li);
+            this.ulELement.append(li);
+        }
+    }
+}
+
 export interface panelLi {
     [key: string]: Function
 }
@@ -111,4 +140,10 @@ export interface attrs {
     [key: string]: string
     name: string,
     type: string,
+}
+
+export type urls = {
+    [key: string]: string
+    name: string,
+    url: string
 }
