@@ -8,6 +8,8 @@ export default class ColorPanel {
     public constructor(elem:HTMLElement) {
         this.elements = new ColorPanelElements;
         elem.prepend(this.elements.html);
+        // 将canva 宽度设置层和父级一样
+        this.elements.html.width = elem.clientWidth;
     }
 
     /**
@@ -17,6 +19,7 @@ export default class ColorPanel {
         /**
          * 计算单个宽度
          */
+        console.log(this.elements.html.width);
         const cols = this.elements.canvas.createLinearGradient(0,0,this.elements.html.width,0);
 
         cols.addColorStop(0, '#000');
