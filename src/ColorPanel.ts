@@ -47,7 +47,6 @@ export default class ColorPanel {
         this.elements.html.addEventListener('click', e => {
 
             let getColor = this.elements.canvas.getImageData(e.offsetX, e.offsetY, 1, 1);
-            console.log(getColor);
 
             const color = `rgb(${getColor.data[0]},${getColor.data[1]},${getColor.data[2]})`;
             body.setBodyContent(color);
