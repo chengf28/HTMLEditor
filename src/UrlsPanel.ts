@@ -1,4 +1,5 @@
 import { urls, UrlPanelElements } from "./global";
+import EditorPanel from "./EditorPanel";
 
 export default class UrlsPanel {
 
@@ -10,6 +11,17 @@ export default class UrlsPanel {
         parent.append(this.element.rootElement);
     }
     
+
+    public init(body: EditorPanel)
+    {
+        for (let i = 0; i < this.element.lis.length; i++) {
+            this.element.lis[i].addEventListener('click',e=>{
+                let content = (<HTMLLIElement>e.target).innerText.split(':');
+                body.setBodyContent(content[1]);
+            });
+        }
+    }
+
     public hide(){
         this.element.rootElement.remove();
     }

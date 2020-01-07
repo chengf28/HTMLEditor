@@ -1,5 +1,5 @@
 import EditorPanel from "./EditorPanel";
-import { clickPosition, attrs } from "./global";
+import { clickPosition, attrs, urls } from "./global";
 
 export default class HTMLEditor {
 
@@ -12,6 +12,8 @@ export default class HTMLEditor {
     private element: HTMLElement;
 
     private EditorPanel: EditorPanel;
+
+    private urls:Array<urls>;
 
 
     constructor() {
@@ -163,7 +165,8 @@ export default class HTMLEditor {
         /**
          * 设置面板标题
          */
-        this.EditorPanel.setTitle(`<${this.element.tagName.toLowerCase()}>标签`);
+        const title = `<${this.element.tagName.toLowerCase()}>标签`;
+        this.EditorPanel.setTitle(title);
 
         /**
          * 设置面板属性
@@ -246,7 +249,9 @@ export default class HTMLEditor {
                     }
                 } else if (type == 'attr') {
                     if (onClick.id == 'href') {
-
+                        if (this.urls) {
+                            this.EditorPanel.addUrlsPanel(this.urls);
+                        }
                     }
                     text = this.element.getAttribute(onClick.id);
                 }
@@ -267,6 +272,7 @@ export default class HTMLEditor {
          */
         (this.EditorPanel.getElement('footer_btn') as HTMLButtonElement).addEventListener('click', () => {
             const info = this.EditorPanel.getBodyContent();
+            
             if (info[2] == 'content') {
                 this.element.innerHTML = info[0];
             } else if (info[2] == 'css') {
@@ -278,6 +284,10 @@ export default class HTMLEditor {
             } else {
                 this.element.setAttribute(info[1], info[0]);
             }
+            this.EditorPanel.setTitle('<b>修改成功</b>');
+            setTimeout(() => {
+                this.EditorPanel.setTitle(title);
+            }, 1000);
         });
 
         /**
@@ -290,6 +300,11 @@ export default class HTMLEditor {
     public close() {
         HTMLEditor.isClick = false;
         this.EditorPanel.hide();
+    }
+
+    public setUrl(urls:Array<urls>)
+    {
+        this.urls = urls;
     }
 
 }

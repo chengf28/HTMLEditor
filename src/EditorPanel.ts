@@ -225,6 +225,7 @@ export default class EditorPanel {
     public addUrlsPanel(urls: Array<urls>) {
         if (!this.urlPanel) {
             this.urlPanel = new UrlsPanel(this.elements.footer, 'url_list', urls);
+            this.urlPanel.init(this);
         }
     }
 

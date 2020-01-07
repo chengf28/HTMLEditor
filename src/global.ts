@@ -125,7 +125,7 @@ export class UrlPanelElements {
     {
         for (let i = 0; i < urls.length; i++) {
             const li = document.createElement('li');
-            li.innerHTML = `<b>${urls[i].name}:</b>${urls[i].url}`
+            li.innerHTML = `${urls[i].name}:${urls[i].url}`;
             this.lis.push(li);
             this.ulELement.append(li);
         }
