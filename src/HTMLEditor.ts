@@ -106,18 +106,7 @@ export default class HTMLEditor {
 
         }
 
-        if (element.y > window.innerHeight / 2) {
-            /**
-             * 下半部
-             */
-            const heigth = (<HTMLElement>this.EditorPanel.getElement('panel')).clientHeight;
-
-            panelPosition._y = panelPosition._y - heigth > 0 ? panelPosition._y - heigth : 10;
-
-            if (heigth > window.innerHeight) {
-                panelPosition._y -= (heigth - window.innerHeight);
-            }
-        }
+        
 
         /**
          * 设置关闭按钮

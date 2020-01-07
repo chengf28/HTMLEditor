@@ -79,7 +79,7 @@ module.exports = {
             template: path.resolve(__dirname, 'public/index.html')
         }),
         new MiniCssExtractPlugin({
-            filename: '[name].css',
+            filename: 'HTMLEditor.css',
             chunkFilename: '[id].css'
         }),
         // new webpack.HotModuleReplacementPlugin(),
