@@ -5,7 +5,7 @@ import "../src/app.scss";
 htmleditor.addLinsener(document.getElementById('container')).setUrl([
     {
         name:'测试',
-        url:'www.google.com'
+        url:'http://www.google.com:80'
     },
     {
         name:'测试2',
