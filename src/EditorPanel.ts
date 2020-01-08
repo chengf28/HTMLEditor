@@ -150,8 +150,12 @@ export default class EditorPanel {
         this.elements.body_right_ul_li.forEach(li => {
             li.remove();
         });
-        this.elements.body_left.style.color = '#000';
-        this.elements.body_left.style.backgroundColor = '#fff';
+
+        this.elements.body_left.style.removeProperty('color');
+        this.elements.body_left.style.removeProperty('backgroundColor');
+
+        // this.elements.body_left.style.color = '#000';
+        // this.elements.body_left.style.backgroundColor = '#fff';
         this.elements.body_right_ul_li = [];
 
         if (this.colorPanel) {
@@ -216,8 +220,8 @@ export default class EditorPanel {
      */
     public removeColorPanel() {
         if (this.colorPanel) {
-            this.elements.body_left.style.color = '#000';
-            this.elements.body_left.style.backgroundColor = '#fff';
+            this.elements.body_left.style.removeProperty('color');
+            this.elements.body_left.style.removeProperty('background-color');
 
             this.colorPanel.hide();
             this.colorPanel = undefined;

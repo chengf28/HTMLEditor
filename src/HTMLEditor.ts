@@ -16,11 +16,16 @@ export default class HTMLEditor {
     private urls:Array<urls>;
 
     static onSelectClass:string = 'htmleditor-select';
+    static onMouseOnClass:string = 'htmleditor-on';
 
+    private rootElement:HTMLElement;
 
-    constructor() {
+    constructor(rootElement?:HTMLElement) {
         // 新建面板
         this.EditorPanel = new EditorPanel;
+        if (rootElement) {
+            this.rootElement = rootElement;
+        }
         // 追加面板到根目录
         document.body.append(this.EditorPanel.getElement('panel') as HTMLElement);
         this.movelistener();
@@ -64,8 +69,8 @@ export default class HTMLEditor {
 
     }
 
-    public static addLinsener(element: HTMLElement | HTMLDocument | Element): HTMLEditor {
-        let instance = HTMLEditor.getInstance();
+    public static addLinsener(element: HTMLElement | HTMLDocument | Element ,rootElement?:HTMLElement): HTMLEditor {
+        let instance = HTMLEditor.getInstance(rootElement);
         element.addEventListener('click', (e: MouseEvent) => {
             e.preventDefault();
             /**
@@ -76,31 +81,53 @@ export default class HTMLEditor {
                 instance.init(e);
             }
         });
+
+
+        element.addEventListener('mouseover',(e:MouseEvent)=>{
+            (<HTMLElement>e.target).classList.add(HTMLEditor.onMouseOnClass);
+        });
+
+
+        element.addEventListener('mouseout',(e:MouseEvent)=>{
+            (<HTMLElement>e.target).classList.remove(HTMLEditor.onMouseOnClass);
+        });
+
+
         return instance;
     }
 
-    private static getInstance(): HTMLEditor {
+    private static getInstance(rootElement?:HTMLElement): HTMLEditor {
         if (!HTMLEditor.isInstance) {
-            HTMLEditor.instance = new HTMLEditor;
+            HTMLEditor.instance = new HTMLEditor(rootElement);
             HTMLEditor.isInstance = true;
         }
         return HTMLEditor.instance;
     }
 
     public init(element: MouseEvent) {
+
+        
         /**
          * 点击到的元素标签
          */
         this.element = <HTMLElement>element.target;
+
         this.element.classList.add(HTMLEditor.onSelectClass);
         /**
          * 面板产生位置
          */
-        let panelPosition: clickPosition = new clickPosition(
-            element.x,
-            element.y
-        );
+        let margin_top:number = 0;
+        let margin_left:number = 0;
+        if (this.rootElement) {
+            margin_top = this.rootElement.offsetTop;
+            margin_left = this.rootElement.offsetLeft;
+        }
+        
 
+        let panelPosition: clickPosition = new clickPosition(
+            element.x+margin_left,
+            element.y+margin_top
+        );
 
 
         // 点击点在右侧

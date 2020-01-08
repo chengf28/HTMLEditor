@@ -3,21 +3,30 @@
     padding: 0;
 }
 #parent{
-    position: absolute;
     width:100%;
     height: 200px;
     #box{
         p{
-            color: #fff;
+            background: antiquewhite;
             padding: 20px;
             margin-top: 10px;
-            border: 1px solid #F00;
         }
         a{
-            background: #000;
+            background: aqua;
             display: inline-block;
             width: 100px;
             height: 100px;
         }
     }
 }
+html,body{
+    height: 100%;
+}
+iframe{
+    margin-top: 100px;
+    margin-left: 100px;
+    border: 1px double #F00;
+    width: 100%;
+    height: 100%;
+}
+
