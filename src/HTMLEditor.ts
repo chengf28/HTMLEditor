@@ -13,14 +13,11 @@ export default class HTMLEditor {
 
     private EditorPanel: EditorPanel;
 
-    private urls:Array<urls>;
+    private urls: Array<urls>;
 
-    static onSelectClass:string = 'htmleditor-select';
-    static onMouseOnClass:string = 'htmleditor-on';
+    private rootElement: HTMLElement;
 
-    private rootElement:HTMLElement;
-
-    constructor(rootElement?:HTMLElement) {
+    constructor(rootElement?: HTMLElement) {
         // 新建面板
         this.EditorPanel = new EditorPanel;
         if (rootElement) {
@@ -36,13 +33,25 @@ export default class HTMLEditor {
      */
     private movelistener() {
         let root = (this.EditorPanel.getElement('panel') as HTMLElement);
+        let head = this.EditorPanel.getElement('title') as HTMLElement;
+        let foot = this.EditorPanel.getElement('footer') as HTMLElement;
         let x: number;
         let y: number;
         let left: number;
         let top: number;
         let isMove: boolean = false;
         // 鼠标按下
-        root.addEventListener('mousedown', (e: MouseEvent) => {
+        head.addEventListener('mousedown', (e: MouseEvent) => {
+            root.style.cursor = 'move';
+            x = e.clientX;
+            y = e.clientY;
+            left = root.offsetLeft;
+            top = root.offsetTop;
+            isMove = true;
+        });
+
+
+        foot.addEventListener('mousedown', (e: MouseEvent) => {
             root.style.cursor = 'move';
             x = e.clientX;
             y = e.clientY;
@@ -52,7 +61,13 @@ export default class HTMLEditor {
         });
 
         // 鼠标放开
-        root.addEventListener('mouseup', () => {
+        head.addEventListener('mouseup', () => {
+            root.style.cursor = 'default';
+            isMove = false;
+        });
+
+        // 鼠标放开
+        foot.addEventListener('mouseup', () => {
             root.style.cursor = 'default';
             isMove = false;
         });
@@ -69,7 +84,7 @@ export default class HTMLEditor {
 
     }
 
-    public static addLinsener(element: HTMLElement | HTMLDocument | Element ,rootElement?:HTMLElement): HTMLEditor {
+    public static addLinsener(element: HTMLElement | HTMLDocument | Element, rootElement?: HTMLElement): HTMLEditor {
         let instance = HTMLEditor.getInstance(rootElement);
         element.addEventListener('click', (e: MouseEvent) => {
             e.preventDefault();
@@ -83,20 +98,22 @@ export default class HTMLEditor {
         });
 
 
-        element.addEventListener('mouseover',(e:MouseEvent)=>{
-            (<HTMLElement>e.target).classList.add(HTMLEditor.onMouseOnClass);
+        element.addEventListener('mouseover', (e: MouseEvent) => {
+            if (!HTMLEditor.isClick) {
+                (<HTMLElement>e.target).style.border = '1px dotted #999';
+            }
         });
 
 
-        element.addEventListener('mouseout',(e:MouseEvent)=>{
-            (<HTMLElement>e.target).classList.remove(HTMLEditor.onMouseOnClass);
+        element.addEventListener('mouseout', (e: MouseEvent) => {
+            (<HTMLElement>e.target).style.removeProperty('border');
         });
 
 
         return instance;
     }
 
-    private static getInstance(rootElement?:HTMLElement): HTMLEditor {
+    private static getInstance(rootElement?: HTMLElement): HTMLEditor {
         if (!HTMLEditor.isInstance) {
             HTMLEditor.instance = new HTMLEditor(rootElement);
             HTMLEditor.isInstance = true;
@@ -106,27 +123,26 @@ export default class HTMLEditor {
 
     public init(element: MouseEvent) {
 
-        
         /**
          * 点击到的元素标签
          */
         this.element = <HTMLElement>element.target;
 
-        this.element.classList.add(HTMLEditor.onSelectClass);
+        this.select(this.element, true);
         /**
          * 面板产生位置
          */
-        let margin_top:number = 0;
-        let margin_left:number = 0;
+        let margin_top: number = 0;
+        let margin_left: number = 0;
         if (this.rootElement) {
             margin_top = this.rootElement.offsetTop;
             margin_left = this.rootElement.offsetLeft;
         }
-        
+
 
         let panelPosition: clickPosition = new clickPosition(
-            element.x+margin_left,
-            element.y+margin_top
+            element.x + margin_left,
+            element.y + margin_top
         );
 
 
@@ -136,7 +152,7 @@ export default class HTMLEditor {
 
         }
 
-        
+
 
         /**
          * 设置关闭按钮
@@ -292,7 +308,7 @@ export default class HTMLEditor {
          */
         (this.EditorPanel.getElement('footer_btn') as HTMLButtonElement).addEventListener('click', () => {
             const info = this.EditorPanel.getBodyContent();
-            
+
             if (info[2] == 'content') {
                 this.element.innerHTML = info[0];
             } else if (info[2] == 'css') {
@@ -319,13 +335,29 @@ export default class HTMLEditor {
 
     public close() {
         HTMLEditor.isClick = false;
-        this.element.classList.remove(HTMLEditor.onSelectClass);
+        this.select(this.element, false);
         this.EditorPanel.hide();
     }
 
-    public setUrl(urls:Array<urls>)
-    {
+    public setUrl(urls: Array<urls>) {
         this.urls = urls;
+    }
+
+    private select(element: HTMLElement, on: boolean = false) {
+        console.log(element);
+
+        if (on) {
+            element.style.zIndex = '999'
+            element.style.boxShadow = '0 0 30px rgba(105, 105, 105, 0.507)';
+        } else {
+            element.style.removeProperty('box-shadow');
+
+            element.style.removeProperty('z-index');
+
+
+        }
+
+
     }
 
 }
