@@ -152,7 +152,7 @@ export default class EditorPanel {
         });
 
         this.elements.body_left.style.removeProperty('color');
-        this.elements.body_left.style.removeProperty('backgroundColor');
+        this.elements.body_left.style.removeProperty('background-color');
 
         // this.elements.body_left.style.color = '#000';
         // this.elements.body_left.style.backgroundColor = '#fff';
