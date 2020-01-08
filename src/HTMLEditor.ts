@@ -215,6 +215,7 @@ export default class HTMLEditor {
                 let text = '';
                 const type = onClick.getAttribute('atype');
                 this.EditorPanel.removeColorPanel();
+                this.EditorPanel.removeUrlsPanel();
                 if (type == 'content') {
                     text = this.element.innerHTML;
 

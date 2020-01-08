@@ -157,6 +157,9 @@ export default class EditorPanel {
         if (this.colorPanel) {
             this.colorPanel.hide();
         }
+        if (this.urlPanel) {
+            this.urlPanel.hide();
+        }
     }
 
     /**
