@@ -2,14 +2,14 @@ import htmleditor from './HTMLEditor';
 import "../src/app.scss";
 // let t = new HTMLEditor(document.getElementById('box'));
 // document.getElementById('cantainer').onload=function(e){
-    // let b =(document.getElementById('cantainer')as HTMLFrameElement);
+    let b =(document.getElementById('cantainer') as HTMLFrameElement);
+    console.log(b);
+    let a = b.contentWindow.document.body;
     
-    // let a = b.contentWindow.document.body;
+    console.log(a,b.parentElement);
     
-    // console.log(a,b);
-    
-    let a = document.body;
-    htmleditor.addLinsener(a).setUrl([
+    // let a = document.body;
+    htmleditor.addLinsener(a,b.parentElement).setUrl([
         {
             name:'测试',
             url:'http://www.google.com:80'

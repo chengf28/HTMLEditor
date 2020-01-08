@@ -22,11 +22,24 @@
 html,body{
     height: 100%;
 }
-iframe{
-    margin-top: 100px;
-    margin-left: 100px;
+#test{
+    top: 100px;
+    left: 100px;
     border: 1px double #F00;
     width: 100%;
     height: 100%;
+    position: absolute;
+    
+}
+#test2,#test3,#test4{
+    top: 100px;
+    left: 100px;
+    border: 1px double #F00;
+    width: 100%;
+    height: 100%;
+    position: absolute;
+}
+iframe{
+    width: 100%;
 }
 
