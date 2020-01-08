@@ -15,6 +15,8 @@ export default class HTMLEditor {
 
     private urls:Array<urls>;
 
+    static onSelectClass:string = 'htmleditor-select';
+
 
     constructor() {
         // 新建面板
@@ -90,7 +92,7 @@ export default class HTMLEditor {
          * 点击到的元素标签
          */
         this.element = <HTMLElement>element.target;
-
+        this.element.classList.add(HTMLEditor.onSelectClass);
         /**
          * 面板产生位置
          */
@@ -290,6 +292,7 @@ export default class HTMLEditor {
 
     public close() {
         HTMLEditor.isClick = false;
+        this.element.classList.remove(HTMLEditor.onSelectClass);
         this.EditorPanel.hide();
     }
 
