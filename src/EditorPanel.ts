@@ -57,7 +57,11 @@ export default class EditorPanel {
                 let li = document.createElement('li');
                 this.elements.body_right_ul_li.push(li);
                 this.elements.body_right_ul.append(li);
-                li.innerHTML = ZH_CN[lis[attr]['name']];
+                if (ZH_CN[lis[attr]['name']]) {
+                    li.innerHTML = ZH_CN[lis[attr]['name']];
+                }else{
+                    li.innerHTML = lis[attr]['name'];
+                }
 
                 li.id = lis[attr]['name'];
                 li.setAttribute('atype', lis[attr]['type']);
